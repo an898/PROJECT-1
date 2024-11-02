@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Coffee Pick-Up App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9; /* Overall background color */
+        }
+        .iphone {
+            width: 375px;
+            height: 812px;
+            border: 16px solid black;
+            border-radius: 36px;
+            background-color: #ffffff; /* Changed to white background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden; /* Prevent content overflow */
+        }
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px; /* Width of the notch */
+            height: 30px; /* Height of the notch */
+            background-color: black;
+            border-radius: 15px;
+        }
+        .camera {
+            position: absolute;
+            top: 5px; /* Distance from top */
+            left: calc(50% - 75px); /* Positioning left of the notch */
+            width: 10px; /* Camera width */
+            height: 10px; /* Camera height */
+            background-color: black; /* Camera color */
+            border-radius: 50%; /* Rounded shape */
+        }
+        .app-container {
+            width: 100%;
+            padding: 10px; /* Reduced padding for better fit */
+            text-align: center;
+            color: black; /* Change text color to black for contrast */
+            box-sizing: border-box; /* Ensure padding doesn't affect total width */
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0; /* Reduced margin for better fit */
+        }
+        .screen {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            background-color: #e7f3ff; /* Light blue background for menu items */
+            padding: 5px; /* Adjusted padding for a better fit */
+            border-radius: 5px; /* Slightly rounded corners */
+        }
+        .menu-item img {
+            width: 40px; /* Resized images for better fit */
+            height: 40px;
+            margin-right: 10px;
+        }
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centering payment methods */
+            margin-top: 20px;
+        }
+        .payment-methods label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .payment-methods img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .card-info {
+            display: none;
+        }
+        .total-price {
+            font-size: 16px; /* Adjusted size */
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .campus-image {
+            width: 100%; /* Responsive width */
+            height: auto; /* Maintain aspect ratio */
+            margin-top: 20px; /* Add spacing */
+        }
+        .shopping-cart {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px; /* Set smaller width for shopping cart icon */
+            cursor: pointer; /* Change cursor to pointer */
+        }
+    </style>
+</head>
+<body>
+
+<div class="iphone">
+    <div class="notch"></div>
+    <div class="camera"></div>
+    <div class="app-container">
+        <!-- Welcome Screen -->
+        <div id="screen1" class="screen active">
+            <img src="logo.png" alt="Uni Coffee Logo" style="width: 200px; margin: 20px 0;"> <!-- Increased size -->
+            <p>Welcome to Uni Coffee! Pick up your order easily.</p>
+            <button onclick="nextScreen(2)">Start</button>
+        </div>
+
+        <!-- Identity Verification Screen -->
+        <div id="screen2" class="screen">
+            <div class="logo">Verify Identity</div>
+            <input type="text" id="name" placeholder="Enter your name" required>
+            <input type="email" id="email" placeholder="Enter your university email" required>
+            <button onclick="nextScreen(3)">Next</button>
+        </div>
+
+        <!-- Menu Selection Screen -->
+        <div id="screen3" class="screen">
+            <div class="logo">Choose Your Items</div>
+            <img src="shopping-cart.png" alt="Shopping Cart" class="shopping-cart" onclick="alert('Shopping Cart Clicked!')"> <!-- Shopping cart only on this screen -->
+            <div class="menu">
+                <div class="menu-item">
+                    <img src="cappuccino.jpg" alt="Cappuccino">
+                    <label>Cappuccino - €2.50</label>
+                    <input type="checkbox" id="item1" data-price="2.50">
+                    <input type="number" id="quantity1" value="1" min="1" style="width: 60px;">
+                    <select id="custom1">
+                        <option value="Small">Small</option>
+                        <option value="Large">Large</option>
+                    </select>
+                </div>
+                <div class="menu-item">
+                    <img src="americano.jpg" alt="Americano">
+                    <label>Americano - €2.00</label>
+                    <input type="checkbox" id="item2" data-price="2.00">
+                    <input type="number" id="quantity2" value="1" min="1" style="width: 60px;">
+                    <select id="custom2">
+                        <option value="Small">Small</option>
+                        <option value="Large">Large</option>
+                    </select>
+                </div>
+                <div class="menu-item">
+                    <img src="latte.jpg" alt="Latte">
+                    <label>Latte - €2.70</label>
+                    <input type="checkbox" id="item3" data-price="2.70">
+                    <input type="number" id="quantity3" value="1" min="1" style="width: 60px;">
+                    <select id="custom3">
+                        <option value="Small">Small</option>
+                        <option value="Large">Large</option>
+                    </select>
+                </div>
+                <div class="menu-item">
+                    <img src="matcha.jpg" alt="Matcha">
+                    <label>Matcha - €3.00</label>
+                    <input type="checkbox" id="item4" data-price="3.00">
+                    <input type="number" id="quantity4" value="1" min="1" style="width: 60px;">
+                    <select id="custom4">
+                        <option value="Small">Small</option>
+                        <option value="Large">Large</option>
+                    </select>
+                </div>
+                <div class="menu-item">
+                    <img src="espresso.jpg" alt="Espresso">
+                    <label>Espresso - €2.20</label>
+                    <input type="checkbox" id="item5" data-price="2.20">
+                    <input type="number" id="quantity5" value="1" min="1" style="width: 60px;">
+                    <select id="custom5">
+                        <option value="Small">Small</option>
+                        <option value="Large">Large</option>
+                    </select>
+                </div>
+                <div class="menu-item">
+                    <img src="toast.jpg" alt="Toast with Tomato">
+                    <label>Toast with Tomato - €1.80</label>
+                    <input type="checkbox" id="item6" data-price="1.80">
+                    <input type="number" id="quantity6" value="1" min="1" style="width: 60px;">
+                    <select id="custom6">
+                        <option value="Hot">Hot</option>
+                        <option value="Cold">Cold</option>
+                    </select>
+                </div>
+                <div class="menu-item">
+                    <img src="croissant.jpg" alt="Croissant">
+                    <label>Croissant - €1.50</label>
+                    <input type="checkbox" id="item7" data-price="1.50">
+                    <input type="number" id="quantity7" value="1" min="1" style="width: 60px;">
+                    <select id="custom7">
+                        <option value="Hot">Hot</option>
+                        <option value="Cold">Cold</option>
+                    </select>
+                </div>
+                <div class="menu-item">
+                    <img src="panchocolat.jpg" alt="Pain au Chocolat">
+                    <label>Pain au Chocolat - €1.90</label>
+                    <input type="checkbox" id="item8" data-price="1.90">
+                    <input type="number" id="quantity8" value="1" min="1" style="width: 60px;">
+                    <select id="custom8">
+                        <option value="Hot">Hot</option>
+                        <option value="Cold">Cold</option>
+                    </select>
+                </div>
+                <div class="menu-item">
+                    <img src="muffin.jpg" alt="English Muffin">
+                    <label>English Muffin - €1.60</label>
+                    <input type="checkbox" id="item9" data-price="1.60">
+                    <input type="number" id="quantity9" value="1" min="1" style="width: 60px;">
+                    <select id="custom9">
+                        <option value="Hot">Hot</option>
+                        <option value="Cold">Cold</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="nextScreen(4)">Next</button>
+        </div>
+
+        <!-- Pick-Up Details Screen -->
+        <div id="screen4" class="screen">
+            <div class="logo">Pick-Up Details</div>
+            <img src="shopping-cart.png" alt="Shopping Cart" class="shopping-cart" onclick="alert('Shopping Cart Clicked!')"> <!-- Shopping cart only on this screen -->
+            <label for="floor">Floor:</label>
+            <select id="floor" required>
+                <option value="4th Floor">4th Floor</option>
+                <option value="10th Floor">10th Floor</option>
+                <option value="21st Floor">21st Floor</option>
+            </select>
+            <label for="time">Pick-up Time: (no more than 30 min from current time)</label>
+            <input type="time" id="time" required>
+            <p id="time-error" class="error" style="display: none;">Invalid time selected. Please choose a time that is at most 30 minutes from now.</p>
+            <button onclick="validateTime()">Next</button>
+        </div>
+
+        <!-- Payment Method Screen -->
+        <div id="screen5" class="screen">
+            <div class="logo">Choose Payment Method</div>
+            <img src="shopping-cart.png" alt="Shopping Cart" class="shopping-cart" onclick="alert('Shopping Cart Clicked!')"> <!-- Shopping cart only on this screen -->
+            <div class="payment-methods">
+                <label>
+                    <img src="applepay.png" alt="Apple Pay">
+                    Apple Pay
+                    <input type="radio" name="payment-method" value="Apple Pay">
+                </label>
+                <label>
+                    <img src="paypal.png" alt="PayPal">
+                    PayPal
+                    <input type="radio" name="payment-method" value="PayPal">
+                </label>
+                <label>
+                    <img src="othercard.png" alt="Other Card">
+                    Other Card
+                    <input type="radio" name="payment-method" value="Other Card">
+                </label>
+                <label>
+                    <img src="cash.png" alt="Cash">
+                    Cash
+                    <input type="radio" name="payment-method" value="Cash">
+                </label>
+            </div>
+            <div class="card-info">
+                <input type="text" placeholder="Card Number" id="card-number">
+                <input type="text" placeholder="CVV" id="cvv">
+            </div>
+            <button onclick="placeOrder()">Place Order</button>
+        </div>
+
+        <!-- Order Confirmation Screen -->
+        <div id="screen6" class="screen">
+            <div class="logo">Order Confirmation</div>
+            <p id="order-details"></p>
+            <p class="total-price" id="total-price"></p>
+            <img src="campus.jpg" alt="University Campus" class="campus-image"> <!-- Added campus image -->
+            <button onclick="location.reload()">Start Over</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('time').addEventListener('input', function() {
+        const currentTime = new Date();
+        const selectedTime = new Date();
+        const timeValue = this.value;
+        const [hours, minutes] = timeValue.split(':');
+        selectedTime.setHours(hours);
+        selectedTime.setMinutes(minutes);
+
+        // Set maximum time to 30 minutes from now
+        const maxTime = new Date(currentTime.getTime() + 30 * 60000);
+        if (selectedTime > maxTime) {
+            this.setCustomValidity("Invalid time selected. Please choose a time that is at most 30 minutes from now.");
+        } else {
+            this.setCustomValidity("");
+        }
+    });
+
+    function nextScreen(screenNumber) {
+        const screens = document.querySelectorAll('.screen');
+        screens.forEach(screen => screen.classList.remove('active'));
+        document.getElementById(`screen${screenNumber}`).classList.add('active');
+        if (screenNumber === 4) {
+            // Set the maximum time to 30 minutes from now
+            const currentTime = new Date();
+            const maxTime = new Date(currentTime.getTime() + 30 * 60000);
+            document.getElementById('time').max = maxTime.toTimeString().slice(0, 5);
+        } else if (screenNumber === 5) {
+            // Show card info inputs if "Other Card" is selected
+            const paymentMethod = document.getElementsByName('payment-method');
+            paymentMethod.forEach(method => {
+                method.addEventListener('change', function() {
+                    const cardInfo = document.querySelector('.card-info');
+                    cardInfo.style.display = this.value === "Other Card" ? "block" : "none";
+                });
+            });
+        }
+    }
+
+    function validateTime() {
+        const currentTime = new Date();
+        const selectedTime = new Date();
+        const timeValue = document.getElementById('time').value;
+        const [hours, minutes] = timeValue.split(':');
+        selectedTime.setHours(hours);
+        selectedTime.setMinutes(minutes);
+
+        const maxTime = new Date(currentTime.getTime() + 30 * 60000);
+
+        if (selectedTime > maxTime) {
+            document.getElementById('time-error').style.display = 'block';
+        } else {
+            document.getElementById('time-error').style.display = 'none';
+            nextScreen(5); // Proceed to payment screen if time is valid
+        }
+    }
+
+    function placeOrder() {
+        const items = [];
+        const prices = [];
+        let totalPrice = 0;
+
+        // Get selected items, their prices, and quantities
+        for (let i = 1; i <= 9; i++) {
+            const itemCheckbox = document.getElementById(`item${i}`);
+            const quantityInput = document.getElementById(`quantity${i}`);
+            const quantity = parseInt(quantityInput.value);
+            if (itemCheckbox.checked && quantity > 0) {
+                const price = parseFloat(itemCheckbox.getAttribute('data-price'));
+                const customOption = document.getElementById(`custom${i}`).value;
+                items.push(`${itemCheckbox.parentElement.querySelector('label').innerText} (Qty: ${quantity}, ${customOption})`);
+                prices.push(price * quantity);
+                totalPrice += price * quantity;
+            }
+        }
+
+        const orderDetails = `Order Details: ${items.join('<br>')}<br>
+                              Pick-up Floor: ${document.getElementById('floor').value}<br>
+                              Pick-up Time: (no more than 30 min from current time) ${document.getElementById('time').value}<br>
+                              Payment Method: ${document.querySelector('input[name="payment-method"]:checked').value}`;
+
+        document.getElementById('order-details').innerHTML = orderDetails;
+        document.getElementById('total-price').innerText = `Total Price: €${totalPrice.toFixed(2)}`;
+        nextScreen(6);
+    }
+</script>
+
+</body>
+</html>
